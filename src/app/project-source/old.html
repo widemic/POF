@@ -1,0 +1,61 @@
+<mat-card>
+    <div class="mat-elevation-z8 project-container">
+      <table mat-table class="full-width-table" [dataSource]="dataSource" matSort aria-label="Elements">
+        <!-- Nr.Crt Column -->
+        <ng-container matColumnDef="NrCrt">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>NrCrt</th>
+          <td mat-cell *matCellDef="let row">{{row.NrCrt}}</td>
+          <td mat-footer-cell *matFooterCellDef>TOTAL</td>
+        </ng-container>
+    
+        <!-- Descriere Column -->
+        <ng-container matColumnDef="Descriere">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Descriere</th>
+          <td mat-cell *matCellDef="let row">{{row.Descriere}}</td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+    
+        <!-- UM Column -->
+        <ng-container matColumnDef="UM">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>UM</th>
+          <td mat-cell *matCellDef="let row">{{row.UM}}</td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+    
+        <!-- Unitati Column -->
+        <ng-container matColumnDef="Unitati">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Unitati</th>
+          <td mat-cell *matCellDef="let row">{{row.Unitati}}</td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+    
+        <!-- Pret Unitar Column -->
+        <ng-container matColumnDef="PretUnitar">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>PretUnitar</th>
+          <td mat-cell *matCellDef="let row">{{row.PretUnitar}}</td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+    
+        <!-- Pret Fara TVA Column -->
+        <ng-container matColumnDef="PretTotalFaraTVA">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>PretTotalFaraTVA</th>
+          <td mat-cell *matCellDef="let row">{{row.PretTotalFaraTVA}}</td>
+          <td mat-footer-cell *matFooterCellDef>56473.87</td>
+        </ng-container>
+    
+    
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+      </table>
+    
+      <mat-paginator #paginator
+          [length]="dataSource.data.length"
+          [pageIndex]="0"
+          [pageSize]="50"
+          [pageSizeOptions]="[25, 50, 100, 250]">
+      </mat-paginator>
+    </div>
+    </mat-card>
+    
+    

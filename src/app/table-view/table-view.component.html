@@ -1,0 +1,121 @@
+<form class="example-form" [formGroup]='usersForm'>
+  <div>
+  <mat-form-field class="search-bar" style="left:60px;">
+    <input matInput placeholder="Cauta si alege un produs" [matAutocomplete]="auto" formControlName='userInput' name="userInput"
+      style="width:100%;">
+    <button mat-icon-button *ngIf="usersForm.value.userInput" matSuffix aria-label="Clear" (click)="setValue()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+  <div style="position: absolute; right: 60px; top: 90px">
+      <button mat-raised-button color="primary" (click)="saveDialog()">Salveaza</button>
+      <button mat-flat-button color="warn">Sterge</button>
+    </div>
+</div>
+
+  <!-- <span>Your choice is: {{usersForm.get('userInput').value | json}}</span> -->
+  <!-- <span>Your choice is: {{userData | json}}</span> -->
+
+  <table mat-table [dataSource]="userData" class="mat-elevation-z8">
+    <!-- Item Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> ID </th>
+      <td mat-cell *matCellDef="let userData"> {{userData.id}} </td>
+      <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+
+    <!-- Item Column -->
+    <ng-container matColumnDef="nrcrt">
+      <th mat-header-cell *matHeaderCellDef> NrCrt </th>
+      <td mat-cell *matCellDef="let userData"> {{userData.nrcrt}} </td>
+      <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+
+    <!-- Cost Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Descriere </th>
+      <td mat-cell *matCellDef="let userData"> {{userData.name}} </td>
+      <td mat-footer-cell *matFooterCellDef> Total </td>
+    </ng-container>
+
+    <!-- Item Column -->
+    <ng-container matColumnDef="um">
+      <th mat-header-cell *matHeaderCellDef> Unitate </th>
+      <td mat-cell *matCellDef="let userData"> {{userData.um}} </td>
+      <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+
+    <!-- Item Column -->
+    <ng-container matColumnDef="quantity">
+      <th mat-header-cell *matHeaderCellDef> Cantitate </th>
+      <td mat-cell *matCellDef="let userData">
+        <mat-form-field class="example-full-width" style="width:25px;">
+          <input matInput #input (change)="userData.quantity = input.value" (change)="reload()">
+        </mat-form-field>
+      </td>
+      <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+
+    <!-- Value Column -->
+    <ng-container matColumnDef="taxed_value">
+      <th mat-header-cell *matHeaderCellDef> Pret unitar </th>
+      <td mat-cell *matCellDef="let userData"> {{userData.taxed_value | number}} </td>
+      <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+
+    <!-- Value Column -->
+    <ng-container matColumnDef="taxed_price">
+      <th mat-header-cell *matHeaderCellDef> Pret total </th>
+      <td mat-cell *matCellDef="let userData"> {{userData.taxed_price | number}} </td>
+      <td mat-footer-cell *matFooterCellDef> {{getTotalCost() | currency}} </td>
+    </ng-container>
+
+    <!-- Item Column -->
+    <ng-container matColumnDef="tax">
+      <th mat-header-cell *matHeaderCellDef> Adaos </th>
+      <td mat-cell *matCellDef="let userData">
+        <mat-form-field class="example-full-width" style="width:25px;">
+          <input matInput #input (change)="userData.tax = input.value" (change)="reload()">
+        </mat-form-field>
+      </td>
+      <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+
+    <!-- Item Column -->
+    <ng-container matColumnDef="value">
+      <th mat-header-cell *matHeaderCellDef> Pret Unitar </th>
+      <td mat-cell *matCellDef="let userData"> {{userData.value}} </td>
+      <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+
+    <!-- Item Column -->
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef> Pret Total </th>
+      <td mat-cell *matCellDef="let userData"> {{userData.price}} </td>
+      <td mat-footer-cell *matFooterCellDef>{{getProjectCost() | currency}}</td>
+    </ng-container>
+    <!-- Item Column -->
+    <ng-container matColumnDef="remove_columm">
+      <th mat-header-cell *matHeaderCellDef>Actiuni</th>
+      <td mat-cell *matCellDef="let userData"><button mat-button color="warn"
+          (click)="remove(userData.nrcrt)">sterge</button></td>
+      <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+  </table>
+
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onSelectionChanged($event)">
+    <mat-option *ngIf="isLoading" class="is-loading" (onSelectionChange)="addToDB()">
+      <mat-spinner diameter="50"></mat-spinner>
+    </mat-option>
+    <ng-container *ngIf="!isLoading">
+      <mat-option *ngFor="let user of filteredUsers" [value]="user">
+        <span>{{ user.name }}</span>
+        <small> | Pret: {{user.value}}</small>
+      </mat-option>
+    </ng-container>
+  </mat-autocomplete>
+</form>

@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Salveaza</h1>
+<div mat-dialog-content>
+  <p>Numele Proiectului</p>
+  <mat-form-field style="width:100%">
+    <input matInput [(ngModel)]="data.projectName" style="width:100%">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="saveAsDraft()">Salveaza ca ciorna</button>
+  <button mat-button [mat-dialog-close]="sendToAprooval()" cdkFocusInitial>Trimite la semnat</button>
+</div>

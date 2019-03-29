@@ -1,0 +1,49 @@
+.full-width-table {
+  width: 100%;
+}
+.data-table{
+  width: 90%;
+  margin: 10px auto;
+}
+.data-table2{
+  width: 40%;
+ //margin: 20px auto;
+}
+// For table's disabled input.
+.mat-input-element:disabled {
+  color: rgba(0, 0, 0, 1);
+}
+
+// For table's disabled mat-select.
+:host /deep/ .mat-select-disabled .mat-select-value-text {
+  color: rgba(0, 0, 0, 1) !important;
+}
+
+:host /deep/ .mat-form-field-disabled .mat-form-field-underline {
+  background-image: none !important;
+}
+.mat-table__wrapper .mat-table {
+  min-width: auto !important;
+  width: 100% !important;
+}
+
+.mat-header-row {
+  width: 100%;
+}
+
+.mat-row {
+  width: 100%;
+}
+.mat-footer-row {
+  font-weight: bold;
+}
+
+.mat-column-Descriere {
+  flex: 1 1 600px;
+}
+.mat-form-field{
+  flex: 1 1 200px;
+}
+.mat-column-NrCrt{
+  flex: 1 1 20px;
+}

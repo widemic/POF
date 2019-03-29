@@ -1,0 +1,56 @@
+<table mat-table class="mat-elevation-z8" #table [dataSource]="dataSource">
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+    <!-- 
+              <input matInput [formControl]="row.validator.controls['name']"
+               [readonly]="!row.editing" placeholder="Name" 
+               [(ngModel)]="row.currentData.name"> -->
+    
+               <input type="text" [readonly]="!row.editing" placeholder="Name" aria-label="Number" 
+               matInput [formControl]="row.validator.controls['name']" [matAutocomplete]="auto" 
+               [(ngModel)]="row.currentData.name">
+               
+               <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                 <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                   {{option}}
+                 </mat-option>
+               </mat-autocomplete>
+    
+            </mat-form-field>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="age">
+          <mat-header-cell *matHeaderCellDef> Age </mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+              <input matInput [formControl]="row.validator.controls['age']" 
+              [readonly]="!row.editing" type="number" placeholder="Age" 
+              [(ngModel)]="row.currentData.age">
+    
+    
+              
+            </mat-form-field>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="actionsColumn">
+          <mat-header-cell *matHeaderCellDef>
+            <button mat-button color="accent" (click)="dataSource.createNew()">New</button>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <button *ngIf="!row.editing" mat-button color="primary" focusable="false" (click)="row.startEdit()">
+                  Edit
+                </button>
+            <button *ngIf="row.editing" mat-button color="primary" focusable="false" (click)="row.confirmEditCreate()">
+                  Save
+                </button>
+            <button mat-button color="primary" focusable="false" (click)="row.cancelOrDelete()">
+                  Delete
+                </button>
+          </mat-cell>
+        </ng-container>
+      
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </table>

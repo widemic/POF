@@ -1,0 +1,124 @@
+<div class="mat-elevation-z8 data-table">
+
+  <mat-table [dataSource]="userData">
+
+    <ng-container matColumnDef="NrCrt">
+      <mat-header-cell *matHeaderCellDef> NrCrt </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+          <input [formControl]="row.validator.controls['NrCrt']" placeholder="NrCrt" matInput>
+        </mat-form-field>
+      </mat-cell>
+      <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+    </ng-container>
+    <ng-container matColumnDef="Descriere">
+      <mat-header-cell *matHeaderCellDef> Descriere </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+          <input [formControl]="row.validator.controls['Descriere']" placeholder="Descriere" matInput
+            [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
+            (optionSelected)="onSelectionChanged($event)">
+            <mat-option *ngIf="isLoading" class="is-loading" (onSelectionChange)="addToDB()">
+              <mat-spinner diameter="50"></mat-spinner>
+            </mat-option>
+            <ng-container *ngIf="!isLoading">
+              <mat-option *ngFor="let user of filteredUsers" [value]="user">
+                <span>{{ product.name }}</span>
+                <small> | ID: {{product.id}}</small>
+              </mat-option>
+            </ng-container>
+          </mat-autocomplete>
+        </mat-form-field>
+      </mat-cell>
+      <mat-footer-cell *matFooterCellDef> Total </mat-footer-cell>
+    </ng-container>
+    <ng-container matColumnDef="UM">
+      <mat-header-cell *matHeaderCellDef> UM </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+          <input [formControl]="row.validator.controls['UM']" placeholder="UM" matInput>
+        </mat-form-field>
+      </mat-cell>
+      <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+    </ng-container>
+    <ng-container matColumnDef="Unitati">
+      <mat-header-cell *matHeaderCellDef> Cantitate </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+          <input [formControl]="row.validator.controls['Unitati']" placeholder="Cantitate" matInput>
+        </mat-form-field>
+      </mat-cell>
+      <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+    </ng-container>
+    <ng-container matColumnDef="PretUnitar">
+      <mat-header-cell *matHeaderCellDef> PretUnitar </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+          <input [formControl]="row.validator.controls['PretUnitar']" placeholder="PretUnitar" matInput>
+        </mat-form-field>
+      </mat-cell>
+      <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+    </ng-container>
+    <ng-container matColumnDef="PretTotalFaraTVA">
+      <mat-header-cell *matHeaderCellDef> PretTotalFaraTVA </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+          <input [formControl]="row.validator.controls['PretTotalFaraTVA']" placeholder="PretTotalFaraTVA" matInput>
+        </mat-form-field>
+      </mat-cell>
+      <mat-footer-cell *matFooterCellDef> {{getTotalCost() | currency:'EUR':'symbol'}} </mat-footer-cell>
+    </ng-container>
+    <ng-container matColumnDef="actionsColumn">
+      <mat-header-cell *matHeaderCellDef>
+        <button mat-icon-button color="accent" (click)="dataSource.createNew()">
+          <mat-icon aria-label="Add new row">add</mat-icon>
+        </button>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <button *ngIf="!row.editing" mat-icon-button color="primary" focusable="false" (click)="row.startEdit()">
+          <mat-icon aria-label="Edit row">edit</mat-icon>
+        </button>
+        <button *ngIf="row.editing" mat-icon-button color="primary" focusable="false" (click)="row.confirmEditCreate()"
+          (click)="getTotalCost()">
+          <mat-icon aria-label="Save row">save</mat-icon>
+        </button>
+        <button mat-icon-button color="primary" focusable="false" (click)="row.cancelOrDelete()">
+          <mat-icon aria-label="Delete row">delete</mat-icon>
+        </button>
+      </mat-cell>
+      <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+    </ng-container>
+    <ng-container matColumnDef="Adaos">
+      <mat-header-cell *matHeaderCellDef> Adaos </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+          <input [formControl]="row.validator.controls['Adaos']" placeholder="Adaos" matInput>
+        </mat-form-field>
+      </mat-cell>
+      <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+    </ng-container>
+    <ng-container matColumnDef="PretUnitarFabrica">
+      <mat-header-cell *matHeaderCellDef> PretUFabrica </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+          <input [formControl]="row.validator.controls['PretUnitarFabrica']" placeholder="PretFabrica" matInput>
+        </mat-form-field>
+      </mat-cell>
+      <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+    </ng-container>
+    <ng-container matColumnDef="TotalCost">
+      <mat-header-cell *matHeaderCellDef> TotalCost </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <mat-form-field floatLabel="{{ row.editing ? 'float' : 'never'}}">
+          <input [formControl]="row.validator.controls['PretTotalCostUnitar']" placeholder="TotalCost" matInput>
+        </mat-form-field>
+      </mat-cell>
+      <mat-footer-cell *matFooterCellDef>{{getTotalCost() | currency}}</mat-footer-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row>
+  </mat-table>
+</div>
