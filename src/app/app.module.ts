@@ -10,9 +10,10 @@ import {MatButtonModule, MatCheckboxModule,
     MatSortModule, MatToolbarModule,
      MatSidenavModule, MatIconModule,
       MatListModule, MatCardModule,
+      MatChipsModule,
     MatInputModule, MatDialogModule} from '@angular/material';
 import { ProjectSourceComponent } from './project-source/project-source.component';
-import { NavigationComponent } from './navigation/navigation.component';
+import { navigation } from './navigation/navigation.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
@@ -29,19 +30,24 @@ import {TableAppService} from '././table-view/table-view.service';
 import {HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api';
 import { CustomerComponent } from './customer/customer.component';
 import {SuplierDataService} from './customer/suplier-data.service'
-import {CustomerService} from './customer/customer.service'
+import {CustomerService} from './customer/customer.service';
+import { CiorneComponent } from './ciorne/ciorne.component';
+import { SigningComponent } from './signing/signing.component'
 @NgModule({
   declarations: [
     AppComponent,
     ProjectSourceComponent,
-    NavigationComponent,
+    navigation,
     DataTableComponent,
     NewUiComponent,
     TableViewComponent,
     CustomerComponent,
-    SaveDialogTableView
+    SaveDialogTableView,
+    CiorneComponent,
+    SigningComponent
   ],
   imports: [
+    MatChipsModule,
     MatDialogModule,
     HttpClientModule,
     BrowserModule,

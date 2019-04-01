@@ -4,6 +4,14 @@
   <mat-form-field style="width:100%">
     <input matInput [(ngModel)]="data.projectName" style="width:100%">
   </mat-form-field>
+  <p>ID-ul Proiectului</p>
+  <mat-form-field style="width:100%">
+    <input matInput [(ngModel)]="data.projectID" style="width:100%">
+  </mat-form-field>
+  <p>Numele Clientului</p>
+  <mat-form-field style="width:100%">
+    <input matInput [(ngModel)]="data.clientName" style="width:100%">
+  </mat-form-field>
 </div>
 <div mat-dialog-actions>
   <button mat-button [mat-dialog-close]="saveAsDraft()">Salveaza ca ciorna</button>

@@ -9,7 +9,7 @@ import {MatSidenav} from '@angular/material/sidenav';
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss']
 })
-export class NavigationComponent {
+export class navigation {
   @ViewChild('sidenav') sidenav: MatSidenav;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)

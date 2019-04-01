@@ -8,23 +8,36 @@ import { Observable } from 'rxjs'
 import { MatAutocompleteSelectedEvent, MatTableDataSource } from '@angular/material';
 import { TableAppService } from './table-view.service';
 import { MatTable } from '@angular/material';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { RouteReuseStrategy, DetachedRouteHandle, ActivatedRouteSnapshot } from '@angular/router';
+import { DefaultRouteReuseStrategy } from '@angular/router/src/route_reuse_strategy';
+import { DataSource } from '@angular/cdk/table';
+import { ActivatedRoute } from '@angular/router';
+
+
 
 
 export interface DialogData {
   projectName: string;
-  draft: boolean;
+  clientName: string;
+  projectID: string;
+  draft: string;
 }
 
 @Component({
   selector: 'app-table-view',
   templateUrl: './table-view.component.html',
   styleUrls: ['./table-view.component.scss'],
+
+
 })
 
 
 export class TableViewComponent implements OnInit {
+  item: any;
+  private sub: any;
   projectName: string;
+  clientName: string;
   draft: boolean
   displayedColumns: string[] = ['id', 'nrcrt', 'name', 'um', 'quantity', 'taxed_value', 'taxed_price', 'tax', 'value', 'price', 'remove_columm'];
   filteredUsers: User[] = [];
@@ -34,9 +47,13 @@ export class TableViewComponent implements OnInit {
   //public data:[{id:any, name:any}] = [{id:null, name:null}];
   public userData: any = []
   public dataSource: any;
-  constructor(private fb: FormBuilder, private appService: TableAppService, public dialog: MatDialog) { }
+  public keys: any[] = [];
+
+  constructor(private fb: FormBuilder, private appService: TableAppService, public dialog: MatDialog, private route: ActivatedRoute) { }
 
   ngOnInit() {
+
+
     this.usersForm = this.fb.group({
       userInput: null,
 
@@ -56,6 +73,26 @@ export class TableViewComponent implements OnInit {
       )
       .subscribe(users => this.filteredUsers = users.results);
 
+    this.sub = this.route.params.subscribe(params => {
+      this.item = params['item']; // (+) converts string 'id' to a number
+      console.log(this.item)
+      if (this.item) {
+        this.itemReload(this.item);
+      }
+      // In a real app: dispatch action to load the details here.
+    });
+
+
+  }
+
+  deleteDialog() {
+
+  }
+
+  itemReload(z: any) {
+    this.userData = JSON.parse(localStorage.getItem(z));
+    //this.reload();
+    console.log(z);
   }
 
   addToDB() {
@@ -99,7 +136,11 @@ export class TableViewComponent implements OnInit {
     //this.usersForm.value.userInput.setValue('');
 
   }
+  local() {
+    this.userData = JSON.parse(localStorage.getItem(this.projectName));
+    this.reload()
 
+  }
   reload() {
     var i = 1;
     this.userData.forEach(element => {
@@ -118,22 +159,22 @@ export class TableViewComponent implements OnInit {
 
   setValue() { this.usersForm.setValue({ userInput: '' }); }
 
-  getTaxedValue(){
+  getTaxedValue() {
     this.userData.forEach(element => {
-      element.taxed_value = element.value * (1 + (element.tax/100));
+      element.taxed_value = element.value * (1 + (element.tax / 100));
     });
   }
- getTaxedPrice(){
-  this.userData.forEach(element => {
-    element.taxed_price = element.taxed_value * element.quantity;
-    element.price = element.value * element.quantity;
-  });
- }
-remove(index:number){
-  console.log(index);
-  this.userData.splice(index-1, 1);
-  this.reload();
-}
+  getTaxedPrice() {
+    this.userData.forEach(element => {
+      element.taxed_price = element.taxed_value * element.quantity;
+      element.price = element.value * element.quantity;
+    });
+  }
+  remove(index: number) {
+    console.log(index);
+    this.userData.splice(index - 1, 1);
+    this.reload();
+  }
 
   displayFn(user: User) {
     if (user) { return user.name; }
@@ -143,15 +184,30 @@ remove(index:number){
   saveDialog(): void {
     const dialogRef = this.dialog.open(SaveDialogTableView, {
       width: '350px',
-      data: {projectName: this.projectName, draft: this.draft}
+      data: { projectName: this.projectName, draft: this.draft }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      this.draft = result;
+      this.projectName = result.projectName;
+      this.clientName = result.clientName;
+      console.log(result);
+      if (result) {
+        if (localStorage.getItem('keys').length > 0) {
+          this.keys = JSON.parse(localStorage.getItem('keys'))
+          this.keys.push(result)
+          localStorage.setItem('keys', JSON.stringify(this.keys))
+        }
+        else {
+          this.keys.push(result)
+          localStorage.setItem('keys', JSON.stringify(this.keys))
+        }
+      }
+      localStorage.setItem(result.projectID, JSON.stringify(this.userData))
+
     });
   }
-  
+
 
 }
 
@@ -163,15 +219,17 @@ export class SaveDialogTableView {
 
   constructor(
     public dialogRef: MatDialogRef<SaveDialogTableView>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
-  saveAsDraft(){
+  saveAsDraft() {
+    //localStorage.setItem(this.data.projectName, JSON.stringify(dataSource))
 
+    return this.data;
   }
-  sendToAprooval(){
+  sendToAprooval() {
 
   }
 

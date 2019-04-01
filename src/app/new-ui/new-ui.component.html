@@ -1,3 +1,15 @@
-<p>
-  new-ui works!
-</p>
+<div >
+  
+  <mat-card *ngFor="let item of data" class="card" [routerLink]="['/sign', item.projectID]" routerLinkActive="router-link-active">
+    <mat-card-header>
+        <mat-card-title>{{item.projectName}}</mat-card-title>
+        <mat-card-subtitle>Client: {{item.clientName}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions>
+      <mat-chip selected color="warn">
+          nesemnat
+      </mat-chip>
+    </mat-card-actions>
+  </mat-card>
+</div>
+

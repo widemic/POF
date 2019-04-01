@@ -5,9 +5,9 @@
       [opened]="false">
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item href="new_table">Creare studiu</a>
-      <a mat-list-item href="#">Lista studii</a>
-      <a mat-list-item href="#">Ciorne</a>
+      <a mat-list-item [routerLink]="['/new_table']" routerLinkActive="router-link-active" (click)="drawer.toggle()">Creare studiu</a>
+      <a mat-list-item [routerLink]="['/home']" routerLinkActive="router-link-active" (click)="drawer.toggle()">Lista studii</a>
+      <a mat-list-item [routerLink]="[ '' ]" routerLinkActive="active" (click)="drawer.toggle()">Ciorne</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -20,7 +20,7 @@
         *ngIf="true">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>POF</span>
+      <span>Project Management System</span>
     </mat-toolbar>
     <!-- Add Content Here -->
     <!-- <app-project-source></app-project-source> -->

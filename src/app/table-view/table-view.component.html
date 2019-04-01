@@ -8,8 +8,9 @@
     </button>
   </mat-form-field>
   <div style="position: absolute; right: 60px; top: 90px">
+      
       <button mat-raised-button color="primary" (click)="saveDialog()">Salveaza</button>
-      <button mat-flat-button color="warn">Sterge</button>
+      <button mat-flat-button color="warn" (click)="deleteDialog()">Sterge</button>
     </div>
 </div>
 
@@ -50,7 +51,7 @@
       <th mat-header-cell *matHeaderCellDef> Cantitate </th>
       <td mat-cell *matCellDef="let userData">
         <mat-form-field class="example-full-width" style="width:25px;">
-          <input matInput #input (change)="userData.quantity = input.value" (change)="reload()">
+          <input matInput #input value="{{userData.quantity}}" (change)="userData.quantity = input.value" (change)="reload()">
         </mat-form-field>
       </td>
       <td mat-footer-cell *matFooterCellDef></td>
@@ -75,7 +76,7 @@
       <th mat-header-cell *matHeaderCellDef> Adaos </th>
       <td mat-cell *matCellDef="let userData">
         <mat-form-field class="example-full-width" style="width:25px;">
-          <input matInput #input (change)="userData.tax = input.value" (change)="reload()">
+          <input matInput #input value="{{userData.tax}}" (change)="userData.tax = input.value" (change)="reload()">
         </mat-form-field>
       </td>
       <td mat-footer-cell *matFooterCellDef></td>
